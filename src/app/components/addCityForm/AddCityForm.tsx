@@ -32,7 +32,7 @@ export const AddCityForm: React.FC<AddCityFormProps> = ({ onAddCity }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.addCityForm}>
+        <form role="form" onSubmit={handleSubmit} className={styles.addCityForm}>
             <input
                 className={styles.inputWrap}
                 type="text"

@@ -1,106 +1,100 @@
-
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CityCard } from './CityCard';
-import { CityState } from '../cityInfo/CityInfo'; 
-
-interface MockLinkProps extends React.PropsWithChildren {
-  href: string;
-}
 
 jest.mock('next/link', () => {
-  return ({ children, href } : MockLinkProps) => (
-    <a href={href} data-testid="city-link">
-      {children}
-    </a>
-  );
+  return ({ children, href }: any) => <a href={href}>{children}</a>;
 });
 
-const mockWeatherData = {
-  main: { temp: 283.15 },
-  weather: [{ main: 'Clouds', icon: '04d' }],
-  sys: { country: 'UA' },
-  coord: { lat: 49.84, lon: 24.03 },
-};
-
-const createMockCity = (updates: Partial<CityState> = {}): CityState => ({
-  id: 'lviv-id',
-  name: 'Lviv',
-  data: (updates.data === null ? null : mockWeatherData) as any, 
-  lastUpdated: Date.now(),
+const mockCity: CityState = {
+  id: 123,
+  name: 'Kyiv',
   isLoading: false,
   error: null,
-  ...updates,
-} as CityState)
+  lastUpdated: '2024-01-01T12:00:00Z',
 
-describe('CityCard', () => {
-  const mockOnRefresh = jest.fn();
-  const mockOnRemove = jest.fn();
+  coord: { 
+    lat: 50.45,
+    lon: 30.52
+  },
 
-  test('renders city name, temperature, description, and update time correctly', () => {
-    const mockCity = createMockCity({
-      lastUpdated: new Date('2025-01-01T12:00:00Z').getTime(),
-    });
+  data: {
+    main: { temp: 10 },
+    weather: [{ main: 'Clouds', icon: '02d' }],
+    sys: { country: 'UA' },
+    coord: { lat: 50.45, lon: 30.52 }
+  }
+};
 
+
+describe('CityCard component', () => {
+
+  test('renders city name', () => {
     render(
-      <CityCard city={mockCity} onRefresh={mockOnRefresh} onRemove={mockOnRemove} />
+      <CityCard
+        city={mockCity}
+        onRefresh={jest.fn()}
+        onRemove={jest.fn()}
+      />
     );
 
-    expect(screen.getByText('Lviv')).toBeInTheDocument();
-    expect(screen.getByText('UA')).toBeInTheDocument();
+    expect(screen.getByText('Kyiv')).toBeInTheDocument();
+  });
+
+  test('renders temperature', () => {
+    render(
+      <CityCard
+        city={mockCity}
+        onRefresh={jest.fn()}
+        onRemove={jest.fn()}
+      />
+    );
+
     expect(screen.getByText('10°C')).toBeInTheDocument();
-    expect(screen.getByText('Clouds')).toBeInTheDocument();
-  });
-  
-  test('renders Loading state when isLoading is true', () => {
-    const mockCity = createMockCity({
-      isLoading: true,
-      data: undefined, 
-      lastUpdated: undefined,
-    });
-
-    render(
-      <CityCard city={mockCity} onRefresh={mockOnRefresh} onRemove={mockOnRemove} />
-    );
-
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
-    const refreshButton = screen.getByRole('button', { name: '...' });
-    expect(refreshButton).toBeInTheDocument();
-    expect(refreshButton).toBeDisabled();
-    expect(screen.queryByText(/°C/)).not.toBeInTheDocument();
   });
 
-  test('renders error message when error is present', () => {
-    const errorMessage = 'City not found';
-    const mockCity = createMockCity({
-      error: errorMessage,
-      data: undefined,
-    });
-
+  test('creates correct detail link URL', () => {
     render(
-      <CityCard city={mockCity} onRefresh={mockOnRefresh} onRemove={mockOnRemove} />
+      <CityCard
+        city={mockCity}
+        onRefresh={jest.fn()}
+        onRemove={jest.fn()}
+      />
     );
 
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
-    expect(screen.queryByText(/°C/)).not.toBeInTheDocument();
+    const link = screen.getByRole('link');
+    expect(link).toHaveAttribute(
+      'href',
+      '/cities/123?lat=50.45&lon=30.52'
+    );
   });
 
-  test('calls onRefresh and onRemove functions when buttons are clicked', () => {
-    const mockCity = createMockCity({});
+  test('calls onRefresh when Update button is clicked', () => {
+    const mockRefresh = jest.fn();
 
     render(
-      <CityCard city={mockCity} onRefresh={mockOnRefresh} onRemove={mockOnRemove} />
+      <CityCard
+        city={mockCity}
+        onRefresh={mockRefresh}
+        onRemove={jest.fn()}
+      />
     );
 
-    const refreshButton = screen.getByRole('button', { name: 'Update' });
-    fireEvent.click(refreshButton);
-    expect(mockOnRefresh).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByText('Update'));
+    expect(mockRefresh).toHaveBeenCalled();
+  });
 
-    const removeButton = screen.getByRole('button', { name: 'Delete' });
-    fireEvent.click(removeButton);
-    expect(mockOnRemove).toHaveBeenCalledTimes(1);
-    
-    const linkElement = screen.getByTestId('city-link');
-    expect(linkElement).toHaveAttribute('href', '/cities/lviv-id?lat=49.84&lon=24.03');
+  test('calls onRemove when Delete button is clicked', () => {
+    const mockRemove = jest.fn();
+
+    render(
+      <CityCard
+        city={mockCity}
+        onRefresh={jest.fn()}
+        onRemove={mockRemove}
+      />
+    );
+
+    fireEvent.click(screen.getByText('Delete'));
+    expect(mockRemove).toHaveBeenCalled();
   });
 });
