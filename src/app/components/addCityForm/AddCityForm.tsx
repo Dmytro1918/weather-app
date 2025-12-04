@@ -34,6 +34,7 @@ export const AddCityForm: React.FC<AddCityFormProps> = ({ onAddCity }) => {
     return (
         <form role="form" onSubmit={handleSubmit} className={styles.addCityForm}>
             <input
+                id='search-input'
                 className={styles.inputWrap}
                 type="text"
                 value={cityName}

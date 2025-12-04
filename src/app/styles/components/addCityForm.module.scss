@@ -1,35 +1,33 @@
-@import '../abstract/variables', '../abstract/functions','../abstract/mixins'; 
+@import '../abstract/functions','../abstract/variables', '../abstract/mixins' ;
 
 .addCityForm {
     display: flex;
-    flex-direction: row; 
+    flex-direction: column; 
     gap: 15px;
     margin: 30px auto;
     max-width: 90%; 
     justify-content: center;
     padding: 0 16px;
 
-input[type="text"] {
-    max-width: 50%;
-    flex-grow: 1;
-    padding: 14px 15px;
-    border: 1px solid $border-color;
-    border-radius: 10px;
-    font-size: 1.1em;
-    background-color: $input-bg;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    .inputWrap {
+        max-width: 100%;
+        flex-grow: 1;
+        padding: 14px 15px;
+        border: 1px solid $border-color;
+        border-radius: 10px;
+        font-size: 1.1em;
+        background-color: $input-bg;
+        transition: border-color 0.2s, box-shadow 0.2s;
 
-    &:focus {
-        border-color: $primary-color;
-        outline: 3px solid $focus-ring; 
-        box-shadow: 0 0 0 3px $focus-ring;
+        &:focus {
+            border-color: $primary-color;
+            outline: 3px solid $focus-ring; 
+            box-shadow: 0 0 0 3px $focus-ring;
+        }
     }
 }
 
-}
-
 .addCityForm button {
-    
     &:not(:disabled) {
         cursor: pointer;
         transition: background-color 0.3s, transform 0.1s;
@@ -44,7 +42,7 @@ input[type="text"] {
     }
 }
 
-@include mq-min(map-get($breakpoints, SMiddleMid)) { 
+@include mq-min(map-get($breakpoints, M)) { 
     
     .addCityForm {
         flex-direction: row; 
@@ -53,8 +51,9 @@ input[type="text"] {
         padding: 0; 
     }
     
-    input[type="text"] {
+    .inputWrap {
         flex-basis: 70%; 
+        max-width: 50%;
     }
     
     .addCityForm button {
@@ -65,12 +64,13 @@ input[type="text"] {
 @include mq-min(map-get($breakpoints, SPlusMax)) {
     
     .addCityForm {
+        flex-direction: row;
         margin-top: 60px;
         margin-bottom: 60px;
         max-width: 800px; 
     }
     
-    input[type="text"] {
+    .inputWrap {
         padding: 16px 20px; 
     }
 }
