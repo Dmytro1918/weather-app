@@ -1,16 +1,17 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CityCard } from './CityCard';
+import { CityState } from '../cityInfo/CityInfo';
 
 jest.mock('next/link', () => {
   return ({ children, href }: any) => <a href={href}>{children}</a>;
 });
 
 const mockCity: CityState = {
-  id: 123,
+  id: '123',
   name: 'Kyiv',
   isLoading: false,
   error: null,
-  lastUpdated: '2024-01-01T12:00:00Z',
+  lastUpdated: Date.now(),
 
   coord: { 
     lat: 50.45,
@@ -18,10 +19,21 @@ const mockCity: CityState = {
   },
 
   data: {
-    main: { temp: 10 },
-    weather: [{ main: 'Clouds', icon: '02d' }],
+    main: {
+      temp: 10,
+      feels_like: 0,
+      humidity: 0
+    },
+    weather: [{
+      main: 'Clouds', icon: '02d',
+      description: ''
+    }],
     sys: { country: 'UA' },
-    coord: { lat: 50.45, lon: 30.52 }
+    coord: { lat: 50.45, lon: 30.52 },
+    lat: 0,
+    lon: 0,
+    id: 0,
+    name: ''
   }
 };
 
