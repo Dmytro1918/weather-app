@@ -1,0 +1,30 @@
+@mixin mq-min($w, $t:false) {
+  @if ($t) {
+    @media all and (min-width: $w) and (pointer: fine) { @content; }
+
+    @media all and (min--moz-device-pixel-ratio: 0) and (min-width: $w) { @content; }
+  }
+
+  @else {
+    @media all and (min-width: $w) { @content; }
+  }
+}
+
+@mixin mq-max($w, $t:false, $orintation: false) {
+  @if($t and $orintation) {
+    @media all and (max-width: $w) and (orientation: $orintation), (pointer: coarse) { @content; }
+  }
+
+  @else if ($orintation) {
+    @media all and (max-width: $w) and (orientation: $orintation) { @content; }
+  }
+
+  @else if ($t) {
+    @media all and (max-width: $w), (pointer: coarse) { @content; }
+  }
+
+  @else {
+    @media all and (max-width: $w) { @content; }
+  }
+}
+

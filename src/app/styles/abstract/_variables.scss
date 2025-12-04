@@ -1,0 +1,24 @@
+$breakpoints: (
+  SMax:      px2rem(410) - 0.001,
+  SMiddleMid: px2rem(640),
+  SPlusMax:  px2rem(940) - 0.001,
+  M:         px2rem(940),
+  L:         px2rem(1024) - 0.001,
+  XLL:       px2rem(1920),
+  XLLMax:    px2rem(1920) + 0.001,
+);
+
+$primary-color: #3f51b5;
+$secondary-color: #f50057;
+$border-color: #ddd;
+$bg-light: #fff;
+$bar-color: #ff9800; 
+$chart-bg: #f9f9f9;
+$line-color: #ccc;
+$shadow-light: rgba(0, 0, 0, 0.05);
+$input-bg: #f9f9f9;
+$focus-ring: #a2c4f8; 
+
+$transition-speed: 0.3s;
+$collapsed-width: 50px; 
+$expanded-width: 250px; 

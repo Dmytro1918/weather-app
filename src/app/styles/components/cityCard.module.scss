@@ -1,0 +1,149 @@
+@import '../abstract/variables', '../abstract/functions','../abstract/mixins'; 
+
+.cardContainer {
+
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    margin: 10px;
+    transition: box-shadow 0.3s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: $bg-light;
+    width: calc(25% - 20px); 
+    min-width: 250px;
+
+    &:hover {
+        box-shadow: 0 6px 15px $shadow-light;
+        transform: translateY(-2px);
+    }
+}
+
+.cityCard {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    text-decoration: none;
+    color: #333;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    
+    .cityName {
+        font-size: 1.5em;
+        margin: 0;
+        font-weight: 600;
+    }
+    .country {
+        color: #777;
+        font-size: 0.9em;
+    }
+}
+
+.weatherInfo {
+    text-align: center;
+    padding: 10px 0;
+    flex-grow: 1;
+
+    .tempSection {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5px;
+
+        .temperature {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: $primary-color;
+            line-height: 1;
+        }
+        .weatherIcon {
+            width: 60px;
+            height: 60px;
+            margin-left: 5px;
+        }
+    }
+    
+    .description {
+        text-transform: capitalize;
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    .lastUpdated {
+        font-size: 0.8em;
+        color: #999;
+    }
+
+    .loading, .error {
+        color: orange;
+        font-style: italic;
+    }
+    .error {
+        color: $secondary-color;
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-top: 1px solid #eee;
+
+    button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-weight: 500;
+    }
+
+    .refreshButton {
+        background-color: #e3f2fd;
+        color: $primary-color;
+        &:hover:not(:disabled) {
+            background-color: #bbdefb;
+        }
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    }
+
+    .removeButton {
+        background-color: #ffebee;
+        color: $secondary-color;
+        &:hover {
+            background-color: #ffcdd2;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .cardContainer {
+        width: calc(50% - 20px); 
+    }
+}
+
+@media (max-width: 600px) {
+    .cardContainer {
+        width: calc(100% - 20px); 
+        margin: 10px 0;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .refreshButton, .removeButton {
+        width: 100%;
+    }
+}

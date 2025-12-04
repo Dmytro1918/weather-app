@@ -1,0 +1,36 @@
+
+@import '../abstract/functions','../abstract/variables', '../abstract/mixins' ;
+
+.dashboardHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.title{
+    margin-bottom: 20px;
+    font-weight: 300;
+    font-size: 24px;
+}
+
+.cityList {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+@include mq-min(map-get($breakpoints, SMiddleMid)) {
+    .dashboardHeader {
+        gap: 20px;
+        flex-direction: row;
+    }
+
+    .title{
+    font-weight: 200;
+    font-size: 40px;
+    }
+}
