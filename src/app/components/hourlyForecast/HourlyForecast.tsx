@@ -46,7 +46,6 @@ const getSimpleDayName = (timestamp: number): string => {
     return `${month} ${getDayWithSuffix(day)}`;
 };
 
-
 interface HourlyForecastProps {
     hourlyData: any[]; 
 }
@@ -115,7 +114,6 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) =>
             </div>
         )
     };
-
 
     const renderHourlyItems = () => {
         return groupedByDay.slice(0, daysToShow).map((dayGroup, dayIndex) => {

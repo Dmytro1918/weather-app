@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-
 interface WeatherData {
     lat: number;
     lon: number;
@@ -41,7 +40,6 @@ export interface CityState {
     coord: {lat:number, lon:number} | null;
 }
 
-
 export const CityInfo: React.FC = () => {
     const [cities, setCities] = useLocalStorage<CityState[]>('weather-cities', []);
     const [isMounted, setIsMounted] = useState(false);
@@ -62,12 +60,10 @@ export const CityInfo: React.FC = () => {
     //request +  parse of response
     const fetchWeatherForCity = useCallback(async (city: CityState): Promise<CityState> => {
         try {
-        
             const weatherData = await getCurrentWeather(city.name);
             if (!weatherData) {
                 return { ...city, isLoading: false, error: 'The city is not found or API error.', lastUpdated: Date.now() };
             }
-
             return {
                 ...city,
                 data: weatherData, 
@@ -75,7 +71,6 @@ export const CityInfo: React.FC = () => {
                 isLoading: false,
                 error: null,
             };
-
         } catch (e) {
             console.error(e);
             return { ...city, isLoading: false, error: (e as Error).message, lastUpdated: Date.now() };
@@ -124,10 +119,7 @@ export const CityInfo: React.FC = () => {
             error: null,
             coord: null
         };
-
-        
         const cityWithWeatherData = await fetchWeatherForCity(newCity); 
-        
         if (cityWithWeatherData.error) {
             setCities(prev => prev.filter(c => c.id !== normalizedCityName));
             setSnackbar({
@@ -184,9 +176,7 @@ export const CityInfo: React.FC = () => {
                     {isGlobalRefreshing ? 'Updating...' : 'Update all 🔃'}
                 </Button>
             </header>
-
             <AddCityForm onAddCity={addCity}></AddCityForm>
-
             <section className={styles.cityList}>
                 {cities.map((city: CityState) => (
                     <CityCard 
