@@ -11,14 +11,8 @@ import {
 } from "recharts";
 import styles from "@/app/styles/components/hourlyForecast.module.scss";
 import { Button } from "@mui/material";
-
-const CHART_COLORS = {
-    temp: { stroke: "#1976d2" }, 
-    feels: { stroke: "#f50057"}, 
-    wind: { stroke: "#ffc107"}, 
-    humidity: { stroke: "#9c27b0"}, 
-    pressure: { stroke: "#00bcd4"}, 
-};
+import { chartColors } from "@/app/config/chartsConfig";
+import { HourlyForecastProps } from "@/app/types/weather";
 
 const getDayWithSuffix = (day: number): string => {
     if (day > 3 && day < 21) return day + 'th';
@@ -34,7 +28,6 @@ const formatEnglishDate = (timestamp: number): string => {
     const date = new Date(timestamp * 1000);
     const day = date.getDate();
     const month = date.toLocaleDateString('en-US', { month: 'long' });
-    
     return `${getDayWithSuffix(day)} of ${month}`;
 };
 
@@ -42,13 +35,8 @@ const getSimpleDayName = (timestamp: number): string => {
     const date = new Date(timestamp * 1000);
     const day = date.getDate();
     const month = date.toLocaleDateString('en-US', { month: 'long' });
-
     return `${month} ${getDayWithSuffix(day)}`;
 };
-
-interface HourlyForecastProps {
-    hourlyData: any[]; 
-}
 
 export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) => {
     if (!hourlyData || hourlyData.length === 0) {
@@ -89,10 +77,11 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) =>
     const handleLoadMore = () => {
         setDaysToShow(prev => prev + 1);
     };
+
     const isLoadMoreVisible = daysToShow < allAvailableDays;
 
-    const renderChart = (dataKey: string, label: string,colorKey: keyof typeof CHART_COLORS) => {
-        const colors = CHART_COLORS[colorKey];
+    const renderChart = (dataKey: string, label: string,colorKey: keyof typeof chartColors) => {
+        const colors = chartColors[colorKey];
         return (
             <div className={styles.chartBox}>
                 <h3 className={styles.labelForGraph}>{label}</h3>
@@ -116,10 +105,8 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) =>
     };
 
     const renderHourlyItems = () => {
-        return groupedByDay.slice(0, daysToShow).map((dayGroup, dayIndex) => {
-            
+        return groupedByDay.slice(0, daysToShow).map((dayGroup, dayIndex) => {           
             const dateString = dayGroup[0].date; 
-
             return (
                 <div key={dayIndex} className={styles.dailyRowWrapper}>                   
                     <h3 className={styles.dailyHeader}>
@@ -132,7 +119,6 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) =>
                                     <div className={styles.time}>{h.time}</div>
                                     <div className={styles.dateSmall}>{h.date}</div> 
                                 </div>
-                                
                                 <img
                                     src={`https://openweathermap.org/img/wn/${h.icon}@2x.png`}
                                     alt={h.description}
@@ -140,7 +126,6 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) =>
                                 />
                                 <div className={styles.temp}>{h.temp}°C</div>
                                 <div className={styles.description}>{h.description}</div>
-
                                 <div className={styles.details}>
                                     <span>💨 {h.wind} m/s</span>
                                     <span>💧 {h.humidity}%</span>
@@ -156,20 +141,16 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) =>
 
     return (
         <div className={styles.wrapper}>
-
             <div className={styles.chartsGrid}>
                 {renderChart("temp", "Temperature (°C)", "temp")} 
                 {renderChart("feels", "Feels Like (°C)", "feels")}
                 {renderChart("wind", "Wind speed (m/s)", "wind")}
                 {renderChart("humidity", "Humidity (%)", "humidity")}
             </div>
-
             <h2 className={styles.titleWeather}>Weather every 3 hours</h2>
-            
             <div className={styles.threeHourList}>
                 {renderHourlyItems()}
             </div>
-
             {isLoadMoreVisible && (
                 <div className={styles.loadMoreButtonDiv}>
                     <Button 
@@ -181,7 +162,6 @@ export const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourlyData }) =>
                     </Button>
                 </div>
             )}
-
         </div>
     );
 };

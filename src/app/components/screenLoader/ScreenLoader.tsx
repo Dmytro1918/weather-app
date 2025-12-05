@@ -1,9 +1,6 @@
 import React from 'react';
 import styles from '@/app/styles/components/screenLoader.module.scss';
-
-interface FullScreenLoaderProps {
-  message: string;
-}
+import { FullScreenLoaderProps } from '@/app/types/weather';
 
 const FullScreenLoader: React.FC<FullScreenLoaderProps> = ({ message }) => {
   return (

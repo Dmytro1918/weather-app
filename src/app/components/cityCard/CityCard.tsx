@@ -1,16 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { CityState } from '../cityInfo/CityInfo'; 
 import styles from '@/app/styles/components/cityCard.module.scss'; 
-
-interface CityCardProps {
-    city: CityState;
-    onRefresh: () => void;
-    onRemove: () => void;
-}
+import { CityCardProps } from '@/app/types/weather';
 
 export const CityCard: React.FC<CityCardProps> = ({ city, onRefresh, onRemove }) => {
-    
     const weatherData = city.data;
     const temperature = weatherData ? Math.round(weatherData.main.temp) : '—';
     const description = weatherData ? weatherData.weather[0].main : 'There is no data';
@@ -26,7 +19,6 @@ export const CityCard: React.FC<CityCardProps> = ({ city, onRefresh, onRemove })
     const iconUrl = iconCode ? `https://openweathermap.org/img/wn/${iconCode}@2x.png` : null;
 
     return (
-
         <div className={styles.cardContainer}>
             <Link href={detailUrl}>
                 <span className={styles.cityCard}>
@@ -36,7 +28,6 @@ export const CityCard: React.FC<CityCardProps> = ({ city, onRefresh, onRemove })
                             {weatherData ? weatherData.sys.country : '—'}
                         </p>
                     </div>
-
                     <div className={styles.weatherInfo}>
                         {city.isLoading ? (
                             <p className={styles.loading}>Loading...</p>

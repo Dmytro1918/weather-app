@@ -6,17 +6,8 @@ import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
 import styles from "@/app/styles/components/cityStyles.module.scss"
 import { Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FullScreenLoader from '@/app/components/screenLoader/ScreenLoader'; 
-
-interface CityDetailsState {
-    currentWeather?: any | null;
-    city?: string;
-    hourlyForecast: any[] | null;
-    isLoading: boolean;
-    error: string | null;
-}
-
+import { CityDetailsState } from '@/app/types/weather';
 
 export default function CityDetailPage() {
     const searchParams = useSearchParams();
@@ -35,12 +26,10 @@ export default function CityDetailPage() {
     useEffect(() => {
         const fetchDetails = async () => {
             setCityData(prev => ({ ...prev, isLoading: true, error: null }));
-
             try {
                 let currentWeatherData = null;
                 let hourlyForecast = null
                 if (lat && lon) {
-
                      hourlyForecast = await getHourlyForecast(lat, lon);
                     if (hourlyForecast && hourlyForecast.current) {
                         currentWeatherData = hourlyForecast.current; 
@@ -53,7 +42,6 @@ export default function CityDetailPage() {
                     isLoading: false,
                     error: null
                 });
-                
             } catch (err) {
                 console.error("Issue while loading detail data:", err);
                 setCityData({
@@ -81,7 +69,6 @@ export default function CityDetailPage() {
 
     return (
         <div className={styles.mainPageContainer}>
-
             {cityData.hourlyForecast && cityData.hourlyForecast.length > 0 ? (
                 <>
                     <div className={styles.headerWrapper}>
@@ -104,7 +91,6 @@ export default function CityDetailPage() {
             ) : (
                 <p>Hourly weather is not loaded || Issue with request</p>
             )}
-
         </div>
     );
 }

@@ -2,10 +2,7 @@
 import React, { useState } from 'react';
 import styles from '@/app/styles/components/addCityForm.module.scss';
 import { Button } from '@mui/material';
-
-interface AddCityFormProps {
-    onAddCity: (cityName: string) => Promise<void>;
-}
+import { AddCityFormProps } from '@/app/types/weather';
 
 export const AddCityForm: React.FC<AddCityFormProps> = ({ onAddCity }) => {
     const [cityName, setCityName] = useState('');
@@ -13,7 +10,6 @@ export const AddCityForm: React.FC<AddCityFormProps> = ({ onAddCity }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
         const trimmedName = cityName.trim();
         if (!trimmedName) {
             alert('The form is empty!');

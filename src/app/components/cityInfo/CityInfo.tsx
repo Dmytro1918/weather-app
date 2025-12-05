@@ -8,37 +8,7 @@ import styles from '@/app/styles/components/cityInfo.module.scss'
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-
-interface WeatherData {
-    lat: number;
-    lon: number;
-    coord: {lat:number, lon:number};
-    id: number;
-    name: string;
-    main: {
-        temp: number;
-        feels_like: number;
-        humidity: number;
-    };
-    weather: Array<{
-        main: any;
-        description: string;
-        icon: string;
-    }>;
-    sys: {
-        country: string;
-    };
-}
-
-export interface CityState {
-    id: string; 
-    name: string; 
-    data?: WeatherData; 
-    lastUpdated: number; 
-    isLoading: boolean; 
-    error: string | null;
-    coord: {lat:number, lon:number} | null;
-}
+import { CityState } from '@/app/types/weather';
 
 export const CityInfo: React.FC = () => {
     const [cities, setCities] = useLocalStorage<CityState[]>('weather-cities', []);
@@ -191,3 +161,4 @@ export const CityInfo: React.FC = () => {
     );
 }
 
+export type { CityState };
